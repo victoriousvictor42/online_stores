@@ -1,0 +1,502 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+  word_document: default
+---
+```{r}
+# Defining the question
+#### use Uservised learning to learn the characteristics of customer groups of Kira Plastinina
+
+# Metrics of success
+#### Unsupervised Learning
+
+# Understanding the context
+#### Kira Plastinina is a Russian brand thais sold through a defunct chain of retail store in different parts of the world, for example, China and Belarus. The Brand's Sales and Marketing Team would like to understand their customer's behaviour from the data they collected oer the past year.
+
+# Recording the Experimental Design
+#### Use K-Means Clustering
+#### use Hierachical Clustering
+
+# Data Relevance
+#### The data is from Kira Plastinina. Therefore we expect the data to be relevant. 
+```
+
+
+```{r}
+# loading the data
+russian <- read.csv("C:/Users/I/Downloads/online_shoppers_intention.csv")
+```
+
+```{r}
+# Looking at the structure of the dataset
+str(russian)
+```
+
+```{r}
+# Looking at the structure of the dataset
+str(russian)
+```
+
+
+```{r}
+# Checking for the size of the dataset
+dim(russian)
+```
+
+```{r}
+# Checking for the column names
+colnames(russian)
+```
+
+```{r}
+# Previewing the top of the dataset
+head(russian)
+```
+
+```{r}
+# Previewing the bottom of the dataset
+tail(russian)
+```
+
+# Data Wrangling
+```{r}
+# Checking for missing data in the dataset
+colSums(is.na(russian))
+```
+
+```{r}
+# Checking for duplicates
+dup_rows <- russian[duplicated(russian), ]
+dup_rows
+```
+
+```{r}
+# Checking for outliers
+boxplot(russian$Administrative)
+```
+
+```{r}
+boxplot(russian$Administrative_Duration)
+```
+
+```{r}
+boxplot(russian$Informational)
+```
+
+```{r}
+boxplot(russian$Informational_Duration)
+```
+
+```{r}
+boxplot(russian$ProductRelated)
+```
+
+```{r}
+boxplot(russian$ProductRelated_Duration)
+```
+
+```{r}
+boxplot(russian$BounceRates)
+```
+
+```{r}
+boxplot(russian$ExitRates)
+```
+
+```{r}
+boxplot(russian$PageValues)
+```
+
+```{r}
+boxplot(russian$SpecialDay)
+```
+
+```{r}
+boxplot(russian$OperatingSystems)
+```
+
+```{r}
+boxplot(russian$Browser)
+```
+
+```{r}
+boxplot(russian$Region)
+```
+
+```{r}
+boxplot(russian$TrafficType)
+```
+
+```{r}
+boxplot(russian$Weekend)
+```
+
+```{r}
+boxplot(russian$Revenue)
+```
+
+```{r}
+colnames(russian)
+```
+
+# Dealing with Annomalies
+```{r}
+# removing missing data
+# we are going to use the mice package to make predictions on the missing values
+install.packages("mice")
+library(mice)
+mice_mod <- mice(russian[, c("Administrative","Administrative_Duration","Informational","Informational_Duration","ProductRelated","ProductRelated_Duration","BounceRates","ExitRates" )], method='rf')
+install.packages("mice")
+mice_complete <- complete(mice_mod)
+```
+
+```{r}
+# we now transfer the missing data values in the dataset
+russian$Administrative <- mice_complete$Administrative
+russian$Administrative_Duration <- mice_complete$Administrative_Duration
+russian$Informational <- mice_complete$Informational
+russian$Informational_Duration <- mice_complete$Informational_Duration
+russian$ProductRelated <- mice_complete$ProductRelated
+russian$ProductRelated_Duration <- mice_complete$ProductRelated_Duration
+russian$BounceRates <- mice_complete$BounceRates
+russian$ExitRates <- mice_complete$ExitRates
+```
+
+```{r}
+# we are now going to remove the duplicates that are in the datasets
+library(dplyr)
+russia <- russian
+distinct(russian, .keep_all= TRUE)
+duplicated(russian)
+russian[duplicated(russian),]
+russian[duplicated(!russian),]
+```
+# the are no absolute reason that we should remove the outliers because they seem valid
+
+```{r}
+# Standardising the column names
+names(russian)[names(russian) == "Administrative"] <- "administrative"
+names(russian)[names(russian) == "Administrative_Duration"] <- "administrative_duration"
+names(russian)[names(russian) == "Informational"] <- "informational"
+names(russian)[names(russian) == "Informational_Duration"] <- "informational_duration"
+names(russian)[names(russian) == "ProductRelated"] <- "product_related"
+names(russian)[names(russian) == "ProductRelated_Duration"] <- "product_related_duration"
+names(russian)[names(russian) == "BounceRates"] <- "bounce_rates"
+names(russian)[names(russian) == "ExitRates"] <- "exit_rates"
+names(russian)[names(russian) == "PageValues"] <- "page_values"
+names(russian)[names(russian) == "SpecialDay"] <- "special_day"
+names(russian)[names(russian) == "Month"] <- "month"
+names(russian)[names(russian) == "Operatingsystems"] <- "operating_systems"
+names(russian)[names(russian) == "Browser"] <- "browser"
+names(russian)[names(russian) == "Region"] <- "region"
+names(russian)[names(russian) == "TrafficType"] <- "traffic_type"
+names(russian)[names(russian) == "VisitorType"] <- "visitor_type"
+names(russian)[names(russian) == "Weekend"] <- "weekend"
+names(russian)[names(russian) == "Revenue"] <- "revenue"
+```
+
+```{r}
+# converting the revenue column to a factor since it our label
+b = c('revenue')
+for (i in b) {
+russian[,i] = as.factor(russian[,i])
+}
+```
+
+# Univariate Analysis
+```{r}
+hist(russian$administrative,
+main="Administrative",
+xlab = "Administrative",
+col='green')
+```
+
+```{r}
+hist(russian$administrative_duration,
+main= "Administrative Duration",
+xlab= "Administrative Duration",
+col= "green")
+```
+
+```{r}
+hist(russian$informational,
+main =  "Informational",
+xlab = "Informational",
+col = "red")
+```
+
+```{r}
+hist(russian$informational_duration,
+main = "Informational Duration",
+xlab= "Informational Duration",
+col = "blue")
+```
+
+
+```{r}
+hist(russian$product_related,
+main = "Product Related",
+xlab = "Product Related",
+col = "blue")
+```
+
+```{r}
+hist(russian$product_related_duration,
+main = "Product Related Duration",
+xlab = "Product Related Duration",
+col = "red")
+```
+
+```{r}
+hist(russian$bounce_rates,
+main = "Bounce Rates",
+xlab = "Bounce Rates",
+col = "purple")
+```
+
+```{r}
+hist(russian$exit_rates,
+main = "Exit Rates",
+xlab = "Exit Rates",
+col = "blue")
+```
+
+```{r}
+hist(russian$page_values,
+main = "Page Values",
+xlab = "Page Values",
+col = "blue")
+```
+
+```{r}
+barplot(table(russian$special_day),
+main = "Special Day",
+xlab = "Special Day",
+col = "blue")
+```
+
+```{r}
+barplot(table(russian$month),
+main = "Month",
+xlab = "Month",
+col = "blue")
+```
+
+```{r}
+barplot(table(russian$OperatingSystems),
+main = "Operating Systems",
+xlab = "Operating Systems",
+col = "green")
+```
+
+```{r}
+barplot(table(russian$browser),
+main = "browser",
+xlab = "browser",
+col = "green")
+```
+
+```{r}
+barplot(table(russian$region),
+main = "region",
+xlab = "region",
+col = "green")
+```
+
+```{r}
+barplot(table(russian$traffic_type),
+main = "Traffic Type",
+xlab = "Traffic Type",
+col = "green")
+```
+
+```{r}
+barplot(table(russian$visitor_type),
+main = "Visitor Type",
+xlab = "Visitor Type",
+col = "blue")
+```
+
+```{r}
+barplot(table(russian$weekend),
+main = "Weekend",
+xlab = "Weekend",
+col = "green")
+```
+
+```{r}
+barplot(table(russian$revenue),
+main = "Revenue",
+xlab = "Revenue",
+col = "black")
+```
+
+#Bivariate Analysis
+```{r}
+# we are going to import the library that is responsible for visualisations
+library(ggplot2)
+```
+
+```{r}
+# administrative ve revenue
+admin =ggplot(data=russian, aes(x=administrative, fill= revenue)) + geom_bar()
+admin
+```
+
+```{r}
+# informational vs revenue
+info = ggplot(data = russian, aes(x = informational, fill= revenue)) + geom_bar()
+info
+```
+
+```{r}
+# Product related vs revenue
+product = ggplot(data = russian, aes(x = product_related, fill= revenue)) + geom_bar()
+product
+```
+
+```{r}
+# Product related vs revenue
+product = ggplot(data = russian, aes(x = special_day, fill= revenue)) + geom_bar()
+product
+```
+
+```{r}
+# Product related vs revenue
+product = ggplot(data = russian, aes(x = month, fill= revenue)) + geom_bar()
+product
+```
+
+```{r}
+# Product related vs revenue
+product = ggplot(data = russian, aes(x = OperatingSystems, fill= revenue)) + geom_bar()
+product
+```
+
+```{r}
+# Product related vs revenue
+product = ggplot(data = russian, aes(x = browser, fill= revenue)) + geom_bar()
+product
+```
+
+```{r}
+# Product region vs revenue
+product = ggplot(data = russian, aes(x = region, fill= revenue)) + geom_bar()
+product
+```
+
+```{r}
+# Product related vs revenue
+product = ggplot(data = russian, aes(x = traffic_type, fill= revenue)) + geom_bar()
+product
+```
+
+```{r}
+# Product related vs revenue
+product = ggplot(data = russian, aes(x = visitor_type, fill= revenue)) + geom_bar()
+product
+```
+
+```{r}
+# Product related vs revenue
+product = ggplot(data = russian, aes(x = weekend, fill= revenue)) + geom_bar()
+product
+```
+
+# Modelling
+###K-Means
+```{r}
+# Preprocessing the data
+# for clustering is a form of unsupervised learning,
+# we are going to remove the dependent variable and assign it a separate variable from the independent variables.
+# then, we shall normalise the independent variable.
+russian.new <- russian[, c(1,2,3,4,5,6,7,8,9,10,12,13,14,15,17)]
+russian.class <- russian[, "revenue"]
+head(russian.new)
+```
+
+```{r}
+# previewing the dependent variable
+head(russian.class)
+```
+
+```{r}
+# converting categorical data to numerical data
+a = c('month', 'visitor_type', "weekend")
+for (i in a) {
+russian[,i] = as.factor(russian[,i])
+}
+```
+
+```{r}
+# normalizing the dataset so as no particular attribute has more impact than another
+normalize <- function(x){
+return ((x-min(x)) / (max(x)-min(x)))
+}
+#russian.new$administrative <- normalize(russian.new$administrative)
+#russian.new$administrative_duration <- normalize(russian.new$administrative_duration)
+#russian.new$informational <- normalize(russian.new$informational)
+#russian.new$informational_duration <- normalize(russian.new$informational_duration)
+#russian.new$product_related <- normalize(russian.new$product_related)
+#russian.new$product_related_duration <- normalize(russian.new$product_related_duration)
+#russian.new$bounce_rates <- normalize(russian.new$bounce_rates)
+#russian.new$exit_rates <- normalize(russian.new$exit_rates)
+russian.new$page_values <- normalize(russian.new$page_values)
+russian.new$special_day <- normalize(russian.new$special_day)
+#russian.new$month <- normalize(russian.new$month)
+russian.new$OperatingSystems <- normalize(russian.new$OperatingSystems)
+russian.new$browser <- normalize(russian.new$browser)
+russian.new$region <- normalize(russian.new$browser)
+russian.new$traffic_type <- normalize(russian.new$traffic_type)
+#russian.new$visitor_type <- normalize(russian.new$visitor_type)
+russian.new$weekend <- normalize(russian.new$weekend)
+```
+
+```{r}
+# Applying the K-means clustering algorithm with no. of centroids(k)=5
+result <- kmeans(na.omit(russian.new),2)
+```
+
+```{r}
+# Previewing the no. of records in each cluster
+result$size
+```
+
+```{r}
+# Getting the value of the cluster center
+result$centers
+```
+
+```{r}
+# Getting the cluster vector that shows the cluster where each record falls
+dim(result$cluster)
+```
+
+```{r}
+# visualising the clustering results
+par(mfrow = c(2,2), mar = c(5,2,2,2))
+plot(russian.new[c(1,2)], col = result$cluster)
+
+# Plotting to see how Sepal.Length and Sepal.Width data points have been distributed
+# originally as per "class" attribute in dataset
+# ---
+#
+plot(russian.new[c(2,2)], col = russian.class)
+plot(russian.new[c(3,2)], col = result$cluster)
+plot(russian.new[c(4,2)], col = russian.class)
+```
+
+
+```{r}
+table(result$cluster, russian.class)
+```
+
+# Clustering
+
+
+```{r}
+d <- dist(russian, method = "euclidean")
+res.hc <- hclust(d, method = "ward.D2" )
+plot(res.hc, cex = 0.6, hang = -1)
+```
