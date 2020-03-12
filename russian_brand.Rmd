@@ -1,9 +1,3 @@
----
-output:
-  pdf_document: default
-  html_document: default
-  word_document: default
----
 ```{r}
 # Defining the question
 #### use Uservised learning to learn the characteristics of customer groups of Kira Plastinina
@@ -32,23 +26,18 @@ russian <- read.csv("C:/Users/I/Downloads/online_shoppers_intention.csv")
 # Looking at the structure of the dataset
 str(russian)
 ```
-
-```{r}
-# Looking at the structure of the dataset
-str(russian)
-```
-
+there are 12 numerical data, 2 factors and 2 logical data
 
 ```{r}
 # Checking for the size of the dataset
 dim(russian)
 ```
-
+there are 12,380 rows and 18 columns
 ```{r}
 # Checking for the column names
 colnames(russian)
 ```
-
+the column nams are not uniform. Hence we will need to standardise them during feature engineering
 ```{r}
 # Previewing the top of the dataset
 head(russian)
@@ -64,81 +53,79 @@ tail(russian)
 # Checking for missing data in the dataset
 colSums(is.na(russian))
 ```
-
+there are 14 missing values in the first 8 features
 ```{r}
 # Checking for duplicates
 dup_rows <- russian[duplicated(russian), ]
 dup_rows
 ```
-
+there is presence of missing data
 ```{r}
 # Checking for outliers
 boxplot(russian$Administrative)
 ```
-
+there is presence of missing data in the administrative feature. 
 ```{r}
 boxplot(russian$Administrative_Duration)
 ```
-
+there is presence of missing data in the administrative duration feature. 
 ```{r}
 boxplot(russian$Informational)
 ```
-
+there is presence of missing data in the informational feature. 
 ```{r}
 boxplot(russian$Informational_Duration)
 ```
-
+there is presence of missing data in the informational duraton feature. 
 ```{r}
 boxplot(russian$ProductRelated)
 ```
-
+there is presence of missing data in the product related feature. 
 ```{r}
 boxplot(russian$ProductRelated_Duration)
 ```
-
+there is presence of missing data in the product related duration feature. 
 ```{r}
 boxplot(russian$BounceRates)
 ```
-
+there is presence of missing data in the bounce rates feature. 
 ```{r}
 boxplot(russian$ExitRates)
 ```
-
+there is presence of missing data in the exit rates feature. 
 ```{r}
 boxplot(russian$PageValues)
 ```
-
+there is presence of missing data in the page values feature. 
 ```{r}
 boxplot(russian$SpecialDay)
 ```
-
+there is presence of missing data in the special day feature. 
 ```{r}
 boxplot(russian$OperatingSystems)
 ```
-
+there is presence of missing data in the operating systems feature. 
 ```{r}
 boxplot(russian$Browser)
 ```
-
+there is presence of missing data in the browser feature. 
 ```{r}
 boxplot(russian$Region)
 ```
-
+there is presence of missing data in the region feature. 
 ```{r}
 boxplot(russian$TrafficType)
 ```
-
+there is presence of missing data in the traffic type feature. 
 ```{r}
 boxplot(russian$Weekend)
 ```
-
+there is presence of missing data in the weekend feature. 
 ```{r}
 boxplot(russian$Revenue)
 ```
+there is presence of missing data in the revenue feature. 
 
-```{r}
-colnames(russian)
-```
 
 # Dealing with Annomalies
 ```{r}
@@ -211,28 +198,28 @@ main="Administrative",
 xlab = "Administrative",
 col='green')
 ```
-
+data is skewed to the right and most of the data is skewed between 0 and 5  
 ```{r}
 hist(russian$administrative_duration,
 main= "Administrative Duration",
 xlab= "Administrative Duration",
 col= "green")
 ```
-
+data is skewed to the right and most of the data is skewed between 0 and 250 
 ```{r}
 hist(russian$informational,
 main =  "Informational",
 xlab = "Informational",
 col = "red")
 ```
-
+data is skewed to the right and most of the data is skewed between 0 and 3
 ```{r}
 hist(russian$informational_duration,
 main = "Informational Duration",
 xlab= "Informational Duration",
 col = "blue")
 ```
-
+data is skewed to the right and most of the data is skewed between 0 and 250
 
 ```{r}
 hist(russian$product_related,
@@ -240,97 +227,98 @@ main = "Product Related",
 xlab = "Product Related",
 col = "blue")
 ```
-
+data is skewed to the right and most of the data is skewed between 0 and 100
 ```{r}
 hist(russian$product_related_duration,
 main = "Product Related Duration",
 xlab = "Product Related Duration",
 col = "red")
 ```
-
+data is skewed to the right and most of the data is skewed between 0 and 10,000
 ```{r}
 hist(russian$bounce_rates,
 main = "Bounce Rates",
 xlab = "Bounce Rates",
 col = "purple")
 ```
-
+data is skewed to the right and most of the data is skewed between 0 and 0.02
 ```{r}
 hist(russian$exit_rates,
 main = "Exit Rates",
 xlab = "Exit Rates",
 col = "blue")
 ```
-
+data is skewed to the right and most of the data is skewed between 0 and 0.05
 ```{r}
 hist(russian$page_values,
 main = "Page Values",
 xlab = "Page Values",
 col = "blue")
 ```
-
+data is skewed to the right and most of the data is skewed between 0 and 25
 ```{r}
 barplot(table(russian$special_day),
 main = "Special Day",
 xlab = "Special Day",
 col = "blue")
 ```
-
+the special day of 0 has the most visits
 ```{r}
 barplot(table(russian$month),
 main = "Month",
 xlab = "Month",
 col = "blue")
 ```
-
+the month of May had most visits
 ```{r}
 barplot(table(russian$OperatingSystems),
 main = "Operating Systems",
 xlab = "Operating Systems",
 col = "green")
 ```
-
+operating systems 2 is the most used to access the website
 ```{r}
 barplot(table(russian$browser),
 main = "browser",
 xlab = "browser",
 col = "green")
 ```
-
+browser 2 is the most used to access the website
 ```{r}
 barplot(table(russian$region),
 main = "region",
 xlab = "region",
 col = "green")
 ```
-
+region 1 has the most number of people visiting the system
 ```{r}
 barplot(table(russian$traffic_type),
 main = "Traffic Type",
 xlab = "Traffic Type",
 col = "green")
 ```
-
+traffic type 2 is has the most visits
 ```{r}
 barplot(table(russian$visitor_type),
 main = "Visitor Type",
 xlab = "Visitor Type",
 col = "blue")
 ```
-
+returning visitorsare the most frequent visitors of the website
 ```{r}
 barplot(table(russian$weekend),
 main = "Weekend",
 xlab = "Weekend",
 col = "green")
 ```
-
+most visit are done during the weekdays
 ```{r}
 barplot(table(russian$revenue),
 main = "Revenue",
 xlab = "Revenue",
 col = "black")
 ```
+revenue collected by the company is less compared to the one that is not collected
 
 #Bivariate Analysis
 ```{r}
@@ -343,66 +331,69 @@ library(ggplot2)
 admin =ggplot(data=russian, aes(x=administrative, fill= revenue)) + geom_bar()
 admin
 ```
-
+generally, there is less revenue collected from the administrative page
 ```{r}
 # informational vs revenue
 info = ggplot(data = russian, aes(x = informational, fill= revenue)) + geom_bar()
 info
 ```
-
+generally, there is less revenue collected from the informational page
 ```{r}
 # Product related vs revenue
 product = ggplot(data = russian, aes(x = product_related, fill= revenue)) + geom_bar()
 product
 ```
-
+generally, there is less revenue collected from the product related page
 ```{r}
 # Product related vs revenue
 product = ggplot(data = russian, aes(x = special_day, fill= revenue)) + geom_bar()
 product
 ```
-
+generally, there is less revenue collected in the special days
+most of the revenue is collected during the special day of 0
 ```{r}
 # Product related vs revenue
 product = ggplot(data = russian, aes(x = month, fill= revenue)) + geom_bar()
 product
 ```
-
+generally, there is less revenue collected through out the year
+November made a lot revenue
 ```{r}
 # Product related vs revenue
 product = ggplot(data = russian, aes(x = OperatingSystems, fill= revenue)) + geom_bar()
 product
 ```
-
+operating system 2 helps the brand to generate revenue  
 ```{r}
 # Product related vs revenue
 product = ggplot(data = russian, aes(x = browser, fill= revenue)) + geom_bar()
 product
 ```
-
+browser 2 helps the brand to generate a lot of revenue
 ```{r}
 # Product region vs revenue
 product = ggplot(data = russian, aes(x = region, fill= revenue)) + geom_bar()
 product
 ```
-
+Alot of revenue is collected from region 1
 ```{r}
 # Product related vs revenue
 product = ggplot(data = russian, aes(x = traffic_type, fill= revenue)) + geom_bar()
 product
 ```
-
+the second type of traffic helps the brand generate a lot of revenue
 ```{r}
 # Product related vs revenue
 product = ggplot(data = russian, aes(x = visitor_type, fill= revenue)) + geom_bar()
 product
 ```
-
+returning visitors are the ones who are making the brand generate a lot of revenue compared to other types of visitors
 ```{r}
 # Product related vs revenue
 product = ggplot(data = russian, aes(x = weekend, fill= revenue)) + geom_bar()
 product
 ```
+Most of the revenue is generated during the weekdays
 
 # Modelling
 ###K-Means
@@ -434,14 +425,14 @@ russian[,i] = as.factor(russian[,i])
 normalize <- function(x){
 return ((x-min(x)) / (max(x)-min(x)))
 }
-#russian.new$administrative <- normalize(russian.new$administrative)
-#russian.new$administrative_duration <- normalize(russian.new$administrative_duration)
-#russian.new$informational <- normalize(russian.new$informational)
-#russian.new$informational_duration <- normalize(russian.new$informational_duration)
-#russian.new$product_related <- normalize(russian.new$product_related)
-#russian.new$product_related_duration <- normalize(russian.new$product_related_duration)
-#russian.new$bounce_rates <- normalize(russian.new$bounce_rates)
-#russian.new$exit_rates <- normalize(russian.new$exit_rates)
+russian.new$administrative <- normalize(russian.new$administrative)
+russian.new$administrative_duration <- normalize(russian.new$administrative_duration)
+russian.new$informational <- normalize(russian.new$informational)
+russian.new$informational_duration <- normalize(russian.new$informational_duration)
+russian.new$product_related <- normalize(russian.new$product_related)
+russian.new$product_related_duration <- normalize(russian.new$product_related_duration)
+russian.new$bounce_rates <- normalize(russian.new$bounce_rates)
+russian.new$exit_rates <- normalize(russian.new$exit_rates)
 russian.new$page_values <- normalize(russian.new$page_values)
 russian.new$special_day <- normalize(russian.new$special_day)
 #russian.new$month <- normalize(russian.new$month)
@@ -491,7 +482,15 @@ plot(russian.new[c(4,2)], col = russian.class)
 ```{r}
 table(result$cluster, russian.class)
 ```
+the true value has less revenue made than the false.
 
+# strengths
+#### it was easy to implement
+#### An instance can change cluster (move to another cluster) when the centroids are recomputed
+
+# weaknesses
+#### it was difficult to predict the number of clusters (K-Value)
+#### The order of the data has an impact on the final results
 # Clustering
 
 
@@ -500,3 +499,9 @@ d <- dist(russian, method = "euclidean")
 res.hc <- hclust(d, method = "ward.D2" )
 plot(res.hc, cex = 0.6, hang = -1)
 ```
+# strengths
+#### It was easy to implement
+#### We did not need to specify the number of clusters required for the algorithm.
+# weaknesses
+#### There was no mathematical objective for Hierarchical clustering.
+#### High space and time complexity for Hierarchical clustering. Hence this clustering algorithm cannot be used when we have huge data.
