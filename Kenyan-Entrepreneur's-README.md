@@ -1,5 +1,5 @@
 # Supervised Learning
-#### Making predictions using K-Nearest Neighbours, Support Vector Machine and Naive Bayes Classifier , 20/3/2020
+#### Making predictions using K-Nearest Neighbours, Support Vector Machine and Naive Bayes Classifier , 14/3/2020
 #### By **Victor Mwenda**
 ## Description
 This is a prediction of a Kenyan Enterpreneur who wanted to be assistance in identifying which individuals are most likely to click on the Ads in his blog. I carried out all the predictions I have stated above.
