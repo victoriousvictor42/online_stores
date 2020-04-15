@@ -1,4 +1,4 @@
-# Unsupervised Learning
+# Unsupervised Learning.
 #### Making predictions using K-Means clustering and Hierarchical clustering, 14/3/2020
 #### By **Victor Mwenda**
 ## Description
